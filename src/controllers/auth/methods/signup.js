@@ -5,7 +5,7 @@ import { generateToken } from "../../../services/jwt_service";
 export const createNewUser = async (user = {}) => {
   const builtUser = build(user);
   const token = generateToken(builtUser);
-  const body = { ...builtUser, tokens: `[${token}]` };
+  const body = { ...builtUser, tokens: JSON.stringify([token]) };
   const userInDB = await createUser(body);
   return [token, null];
 };

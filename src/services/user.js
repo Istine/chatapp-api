@@ -1,3 +1,4 @@
+import { parse } from "dotenv";
 import { AppDataSource } from "../db";
 import { User } from "../models/user.model";
 export const createUser = async (userData) => {
@@ -18,9 +19,9 @@ export const saveUserToken = async (token, email) => {
         email,
       },
     });
-    const tokens = [...userInDB.tokens, token];
+    const tokens = JSON.stringify([...JSON.parse(userInDB.tokens), token]);
     await manager.query(
-      `UPDATE users SET tokens='${tokens}' WHERE email=${email};`
+      `UPDATE users SET tokens='${tokens}' WHERE email='${email}';`
     );
   });
   return ["saved", null];

@@ -7,7 +7,8 @@ export const authenticateUser = async (user = {}) => {
   if (userInDB) {
     const doPasswordsMatch = compare(user.password, userInDB.password);
     if (doPasswordsMatch) {
-      const token = generateToken(userInDB.email);
+      const payload = { email: userInDB.email };
+      const token = generateToken(payload);
       await saveUserToken(token, userInDB.email);
       return [token, null];
     }
