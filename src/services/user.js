@@ -11,4 +11,17 @@ export const findUser = async ({ email, password }) => {
   return await userRepo.findOne({ where: { email } });
 };
 
-export const saveUserToken = async (token, email) => {};
+export const saveUserToken = async (token, email) => {
+  await AppDataSource.transaction(async (manager) => {
+    const userInDB = await manager.findOne(User, {
+      where: {
+        email,
+      },
+    });
+    const tokens = [...userInDB.tokens, token];
+    await manager.query(
+      `UPDATE users SET tokens='${tokens}' WHERE email=${email};`
+    );
+  });
+  return ["saved", null];
+};

@@ -1,6 +1,7 @@
 import express from "express";
 import { Controllers } from "../controllers";
 import { validateSignupData } from "../middleware";
+import { StatusCodes } from "http-status-codes";
 
 const router = express.Router();
 
